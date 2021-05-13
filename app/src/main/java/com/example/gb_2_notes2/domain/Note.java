@@ -1,12 +1,15 @@
 package com.example.gb_2_notes2.domain;
 
 import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
-public class Note {
+public class Note implements Parcelable {
 
     private final int id;
     private final String title;
@@ -21,6 +24,30 @@ public class Note {
         this.time = time;
         this.imageUrl = imageUrl;
     }
+
+    protected Note(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        body = in.readString();
+        if (in.readByte() == 0) {
+            time = null;
+        } else {
+            time = in.readLong();
+        }
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -50,5 +77,41 @@ public class Note {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(body);
+        if (time == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(time);
+        }
+        dest.writeString(imageUrl);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return id == note.id &&
+                Objects.equals(title, note.title) &&
+                Objects.equals(body, note.body) &&
+                Objects.equals(time, note.time) &&
+                Objects.equals(imageUrl, note.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, body, time, imageUrl);
     }
 }
