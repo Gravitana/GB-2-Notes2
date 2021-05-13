@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!-- это макет для портретной ориентации -->
-<!-- в портретной ориентации у activity только один фрагмент -->
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/cities"
-        android:name="com.example.gb_2_notes2.ui.NotesListFragment"
+    <include
+        layout="@layout/fragments_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
