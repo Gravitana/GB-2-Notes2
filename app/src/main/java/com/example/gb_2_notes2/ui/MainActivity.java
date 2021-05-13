@@ -7,8 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 
 import com.example.gb_2_notes2.R;
+import com.example.gb_2_notes2.domain.Note;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotesListFragment.OnNoteListItemClickListener {
 
     private boolean isLandscape = false;
 
@@ -41,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.container, new NotesListFragment())
                         .commit();
             }
+        }
+    }
+
+    @Override
+    public void onNoteListItemClicked(Note note) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (isLandscape) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.details_fragment, NoteDetailFragment.newInstance(note))
+                    .commit();
+        } else {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, NoteDetailFragment.newInstance(note))
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

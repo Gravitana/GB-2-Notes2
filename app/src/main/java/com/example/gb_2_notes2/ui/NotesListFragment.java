@@ -1,5 +1,6 @@
 package com.example.gb_2_notes2.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.gb_2_notes2.R;
@@ -23,8 +23,29 @@ import java.util.List;
 
 public class NotesListFragment extends Fragment {
 
+    public interface OnNoteListItemClickListener {
+        void onNoteListItemClicked(Note note);
+    }
+
+    private OnNoteListItemClickListener onNoteListItemClickListener;
+
     public NotesListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnNoteListItemClickListener) {
+            onNoteListItemClickListener = (OnNoteListItemClickListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        onNoteListItemClickListener = null;
+        super.onDetach();
     }
 
     @Override
@@ -75,11 +96,9 @@ public class NotesListFragment extends Fragment {
     }
 
     private void openNoteDetail(Note note) {
-        Toast.makeText(requireContext(), "Click!!!", Toast.LENGTH_SHORT).show();
-/*
-        if (noteClickListener != null) {
-            noteClickListener.onNoteClicked(note);
+//        Toast.makeText(requireContext(), "Click!!!", Toast.LENGTH_SHORT).show();
+        if (onNoteListItemClickListener != null) {
+            onNoteListItemClickListener.onNoteListItemClicked(note);
         }
-*/
     }
 }
