@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <include layout="@layout/toolbar_main" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
